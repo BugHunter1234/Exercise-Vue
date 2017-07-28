@@ -1,0 +1,226 @@
+<!--
+	作者：444811716@qq.com
+	时间：2017-07-28
+	描述：简单尝试
+-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>简单尝试</title>
+	</head>
+
+	<body>
+		<script src="https://vuejs.org/js/vue.js"></script>
+		<ol>
+			<li>声明式渲染</li>
+			<p id="app">
+				{{ message }}
+			</p>
+			<p>tip:现在数据和 DOM 已经被绑定在一起，所有的元素都是<b>响应式的</b>。我们如何知道？打开你的浏览器的控制台（就在这个页面打开），并修改 app.message，你将看到上例相应地更新</p>
+			<script>
+				var app = new Vue({
+					el: '#app',
+					data: {
+						message: 'Hello Vue!'
+					}
+				})
+			</script>
+			<div id="app-2">
+				<p v-bind:title="message">
+					鼠标悬停几秒钟查看此处动态绑定的提示信息！
+				</p>
+			</div>
+			<script>
+				var app2 = new Vue({
+					el: '#app-2',
+					data: {
+						message: '页面加载于 ' + new Date()
+					}
+				})
+			</script>
+			<li>条件与循环</li>
+			<div id="app-3">
+				<p v-if="seen">现在你看到我了</p>
+			</div>
+			<p>tip:在控制台设置 app3.seen = false，你会发现 “现在你看到我了” 消失了</p>
+			<script>
+				var app3 = new Vue({
+					el: '#app-3',
+					data: {
+						seen: true
+					}
+				})
+			</script>
+			<div id="app-4">
+				<ol>
+					<li v-for="todo in todos">{{ todo.text }}</li>
+				</ol>
+			</div>
+			<p>tip:在控制台里，输入 app4.todos.push({ text: '新项目' })，你会发现列表中添加了一个新项。</p>
+			<script>
+				var app4 = new Vue({
+					el: '#app-4',
+					data: {
+						todos: [{
+								text: '学习 JavaScript'
+							},
+							{
+								text: '学习 Vue'
+							},
+							{
+								text: '整个牛项目'
+							}
+						]
+					}
+				})
+			</script>
+			<li>绑定事件</li>
+			<div id="app-5">
+				<p>{{ message }}</p>
+				<button v-on:click="reverseMessage">逆转消息</button>
+			</div>
+			<script type="text/javascript">
+				var app5 = new Vue({
+					el: '#app-5',
+					data: {
+						message: 'Hello Vue.js!'
+					},
+					methods: {
+						reverseMessage: function() {
+							this.message = this.message.split('').reverse().join('')
+						}
+					}
+				})
+			</script>
+			<li>双向绑定</li>
+			<div id="app-6">
+				<p>{{ message }}</p>
+				<input v-model="message">
+			</div>
+			<script>
+				var app6 = new Vue({
+					el: '#app-6',
+					data: {
+						message: 'Hello Vue!'
+					}
+				})
+			</script>
+			<li>组件化</li>
+			<div id="app-7">
+				<ol>
+					<todo-item v-for="item in groceryList" v-bind:todo="item" v-bind:key="item.id">
+					</todo-item>
+				</ol>
+			</div>
+			<script>
+				Vue.component('todo-item', {
+					props: ['todo'],
+					template: '<li>{{ todo.text }}</li>'
+				})
+				var app7 = new Vue({
+					el: '#app-7',
+					data: {
+						groceryList: [{
+								id: 0,
+								text: '蔬菜'
+							},
+							{
+								id: 1,
+								text: '奶酪'
+							},
+							{
+								id: 2,
+								text: '随便其他什么人吃的东西'
+							}
+						]
+					}
+				})
+			</script>
+			<li>缩写</li>
+			<div>v-bind</div>
+			<pre>
+&lt;!-- 完整语法 --&gt;
+&lt;a v-bind:href="url"&gt;&lt;/a&gt;
+&lt;!-- 缩写 --&gt;
+&lt;a :href="url"&gt;&lt;/a&gt;
+			</pre>
+			<div>v-on</div>
+			<pre>
+&lt;!-- 完整语法 --&gt;
+&lt;a v-on:click="doSomething"&gt;&lt;/a&gt;
+&lt;!-- 缩写 --&gt;
+&lt;a @click="doSomething">&lt;/a&gt;
+			</pre>
+			<li>Class 与 Style 绑定</li>
+			<div>绑定class</div>
+			<ol>
+				<li>对象语法</li>
+				<style>
+					.bind-active-a {
+						color: red;
+					}
+
+					.bind-active-b {
+						font-weight: 900;
+					}
+				</style>
+				<div id="app-8" v-bind:class="{ 'bind-active-a': isActiveA, 'bind-active-b': isActiveB}">1234</div>
+				<script>
+					var vm_8 = new Vue({
+						el: '#app-8',
+						data: {
+							isActiveA: 1,
+							isActiveB: 0,
+						}
+					});
+				</script>
+				<div id="app-9" v-bind:class="classObject">12345</div>
+				<script>
+					var vm_9 = new Vue({
+						el: '#app-9',
+						data: {
+							classObject: {
+								'bind-active-a': 0,
+								'bind-active-b': 1
+							}
+						}
+					});
+				</script>
+				<div id="app-10" v-bind:class="classObject">123456</div>
+				<script>
+					var vm_10 = new Vue({
+						el: '#app-10',
+						data: {
+							isActiveA: 1,
+							isActiveB: 0,
+							isActiveC: 0,
+						},
+						computed: {
+							classObject: function() {
+								return {
+									'bind-active-a': this.isActiveA && !this.isActiveB || this.isActiveC,
+									'bind-active-b': this.isActiveA && this.isActiveB || this.isActiveC
+								}
+							}
+						}
+					});
+				</script>
+				<li>数组语法</li>
+				<div id="app-11" v-bind:class="[isActiveA, isActiveB]">1234567</div>
+					<script>
+					var vm_11 = new Vue({
+						el: '#app-11',
+						data: {
+							isActiveA: 'bind-active-a',
+							isActiveB: 'bind-active-b'
+						}
+					});
+				</script>
+			</ol>
+		</ol>
+
+	</body>
+
+</html>
