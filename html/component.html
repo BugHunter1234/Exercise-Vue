@@ -1,0 +1,42 @@
+<!--
+	作者：444811716@qq.com
+	时间：2017-08-08
+	描述：组件
+-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>组件</title>
+		<style>
+			li {
+				list-style: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<template id="li-item-temp">
+			<li>{{value}}</li>
+		</template>
+		<ul id="ul">
+			<li-item v-for="value in array" :value="value"></li-item>
+		</ul>
+
+		<script type="text/javascript" src="../lib/vue/vue.js"></script>
+		<script>
+			Vue.component("li-item", {
+				props: ["value"],
+				template: "#li-item-temp",
+			});
+			var vm_li = new Vue({
+				el: "#ul",
+				data: {
+					array: ["1", "2", "3"]
+				}
+			});
+		</script>
+	</body>
+
+</html>
